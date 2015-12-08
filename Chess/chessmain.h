@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <QWidget>
 #include <QVector>
-#include "board.h"
+#include <QTimer>
 #include "pieces.h"
 
 using namespace std;
@@ -14,7 +14,8 @@ class ChessMain : public QWidget
     Q_OBJECT
 
 private:
-
+    int BOARD_WIDTH, BOARD_HEIGHT, rectPosX, rectPosY, size;
+    QTimer *timer;
 
 public:
     explicit ChessMain(QWidget* parent = 0);
@@ -22,13 +23,17 @@ public:
 
     QVector<Pieces*> red;
     QVector<Pieces*> black;
-    QVector<Board*> board;
+    QVector<QRect*> board;
 
     void paintEvent(QPaintEvent *e);
 
-
     void initBoard();
+    void setPos(int x, int y);
+    int getRectX();
+    int getRectY();
 
+private slots:
+    void updateGame();
 };
 
 #endif // CHESSMAIN_H
