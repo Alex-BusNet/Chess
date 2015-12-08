@@ -83,6 +83,14 @@ void ChessMain::initBoard()
         rectPosX += size + 1;
         rectPosY = this->height() / 2 - (size * 4);
     }
+
+    for(int i = 0; i < 2; i++)
+    {
+        for(int j = 0; j < BOARD_WIDTH; i++)
+        {
+
+        }
+    }
 }//end of initBoard
 
 void ChessMain::setPos(int x, int y)
