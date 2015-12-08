@@ -1,0 +1,17 @@
+Chess
+
+Main Class:
+	int BoardWidth, BoardHeight;
+	char StartingPlacement [8][2];
+	vector<Pieces*> red;
+	vector<Pieces*> black;
+	
+Pieces Class:
+	int posX, posY, range;
+	void setPos(int x, int y);
+	int getPosx();
+	int getPosY();
+	
+Pawn inherits Pieces:
+	move();
+	attack();
