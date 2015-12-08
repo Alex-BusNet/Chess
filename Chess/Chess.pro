@@ -15,10 +15,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     chessmain.cpp \
-    pieces.cpp
+    pieces.cpp \
+    board.cpp
 
 HEADERS  += mainwindow.h \
     chessmain.h \
-    pieces.h
+    pieces.h \
+    board.h
 
 FORMS    += mainwindow.ui
