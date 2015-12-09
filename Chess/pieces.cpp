@@ -4,8 +4,18 @@ Pieces::Pieces()
 {
     posX = 0;
     posY = 0;
-    rangeAttack = 1;
-    rangeMove = 1;
+    range = 1;
+    type = 'D';
+    squareLoc = 0; //Stores which square the piece is currently standing on.
+    active = true;
+}
+
+Pieces::Pieces(int x, int y, int range, char type, int squareLoc)
+{
+    this->setPos(x, y);
+    this->setRange(range);
+    this->setType(type);
+    this->setLoc(squareLoc);
 }
 
 Pieces::~Pieces()
@@ -19,14 +29,29 @@ void Pieces::setPos(int x, int y)
     this->posY = y;
 }
 
-int Pieces::getATK()
+void Pieces::setRange(int range)
 {
-    return this->rangeAttack;
+    this->range = range;
 }
 
-int Pieces::getMove()
+void Pieces::setType(char type)
 {
-    return this->rangeMove;
+    this->type = type;
+}
+
+void Pieces::setLoc(int squareLoc)
+{
+    this->squareLoc = squareLoc;
+}
+
+void Pieces::setActive()
+{
+    this->active = !active;
+}
+
+int Pieces::getRange()
+{
+    return this->range;
 }
 
 int Pieces::getPosX()
@@ -36,6 +61,21 @@ int Pieces::getPosX()
 
 int Pieces::getPosY()
 {
-   return this->posY;
+    return this->posY;
+}
+
+int Pieces::getLoc()
+{
+    return this->squareLoc;
+}
+
+bool Pieces::isActive()
+{
+    return active;
+}
+
+char Pieces::getType()
+{
+    return this->type;
 }
 

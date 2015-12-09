@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QVector>
 #include <QTimer>
+#include "board.h"
 #include "pieces.h"
 
 using namespace std;
@@ -23,14 +24,11 @@ public:
 
     QVector<Pieces*> red;
     QVector<Pieces*> black;
-    QVector<QRect*> board;
+    QVector<Board*> board;
 
     void paintEvent(QPaintEvent *e);
 
     void initBoard();
-    void setPos(int x, int y);
-    int getRectX();
-    int getRectY();
 
 private slots:
     void updateGame();
