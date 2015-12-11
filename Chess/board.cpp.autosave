@@ -14,6 +14,7 @@ Board::Board()
     rectPosY = 0;
     selected = false;
     highlighted = false;
+    containsPiece = false;
 }
 
 Board::Board(int x, int y, int size, int number)
@@ -24,6 +25,7 @@ Board::Board(int x, int y, int size, int number)
     this->setSize(size);
     selected = false;
     highlighted = false;
+    containsPiece = 
     QRect* square = new QRect(x, y, size, size);
 }
 
@@ -40,6 +42,11 @@ void Board::setNumber(int number)
 void Board::select()
 {
     this->selected = !selected;
+}
+
+void Board::hasPiece()
+{
+    return containsPiece;
 }
 
 void Board::containsPiece()

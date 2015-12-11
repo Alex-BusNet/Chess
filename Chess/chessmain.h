@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <QVector>
 #include <QTimer>
+#include <QMouseEvent>
+#include <QPoint>
 #include "board.h"
 #include "pieces.h"
 
@@ -27,6 +29,7 @@ public:
     QVector<Board*> board;
 
     void paintEvent(QPaintEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
 
     void initBoard();
 

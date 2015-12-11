@@ -103,12 +103,12 @@ void Pieces::setImage(char type, bool color)
 
     if(color)
     {
-        qDebug() << "imageLoc:" << imageLoc.arg("Red").arg(pieceType);
+//        qDebug() << "imageLoc:" << imageLoc.arg("Red").arg(pieceType);
         image = new QPixmap(imageLoc.arg("Red").arg(pieceType));
     }
     else
     {
-        qDebug() << "imageLoc:" << imageLoc.arg("Black").arg(pieceType);
+//        qDebug() << "imageLoc:" << imageLoc.arg("Black").arg(pieceType);
         image = new QPixmap(imageLoc.arg("Black").arg(pieceType));
     }
 }
@@ -118,7 +118,6 @@ void Pieces::setImage(char type, bool color, int width, int height)
     this->setSize(width, height);
     this->setImage(type, color);
 }
-
 
 void Pieces::drawPiece(QPainter &paint, int w, int h)
 {

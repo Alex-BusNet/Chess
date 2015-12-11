@@ -9,7 +9,7 @@ class Board
 {
 private:
     int rectPosX, rectPosY, size, number;
-    bool selected, highlighted, hasPiece;
+    bool selected, highlighted, containsPiece;
 
 public:
     Board();
@@ -21,6 +21,7 @@ public:
     void setSize(int size);
     void setNumber(int number);
     void select();
+    void hasPiece();
 
     bool intersects(QPointF pt);
     bool isSelected();
