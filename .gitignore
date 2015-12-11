@@ -26,3 +26,5 @@
 *.exe
 *.out
 *.app
+
+/Images/WIP
