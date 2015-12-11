@@ -9,11 +9,11 @@ class Board
 {
 private:
     int rectPosX, rectPosY, size, number;
-    bool selected, highlighted, hasPiece;
+    bool selected, highlighted, containsPiece;
 
 public:
     Board();
-    Board(int x, int y, int size, int number);
+    Board(int x, int y, int size, int number, bool piece);
 
 //    void drawBoard(QPainter &paint);
     void initBoard();
@@ -21,7 +21,9 @@ public:
     void setSize(int size);
     void setNumber(int number);
     void select();
+    void setPiece();
 
+    bool hasPiece();
     bool intersects(QPointF pt);
     bool isSelected();
 

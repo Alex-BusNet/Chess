@@ -32,6 +32,8 @@ public:
     void setSize(int width, int height);
     void setImage(char type, bool color);
     void setImage(char type, bool color, int width, int height);
+    void showMoves();
+    void move();
 
     void drawPiece(QPainter &paint, int width, int h);
     void drawPiece(QPainter &paint);

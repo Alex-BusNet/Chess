@@ -14,9 +14,10 @@ Board::Board()
     rectPosY = 0;
     selected = false;
     highlighted = false;
+    containsPiece = false;
 }
 
-Board::Board(int x, int y, int size, int number)
+Board::Board(int x, int y, int size, int number, bool piece)
 {
     this->setNumber(number);
     this->rectPosX = x;
@@ -24,6 +25,7 @@ Board::Board(int x, int y, int size, int number)
     this->setSize(size);
     selected = false;
     highlighted = false;
+    containsPiece = piece;
     QRect* square = new QRect(x, y, size, size);
 }
 
@@ -42,9 +44,14 @@ void Board::select()
     this->selected = !selected;
 }
 
-void Board::containsPiece()
+bool Board::hasPiece()
 {
-    this->hasPiece = !hasPiece;
+    return containsPiece;
+}
+
+void Board::setPiece()
+{
+    this->containsPiece = !containsPiece;
 }
 
 bool Board::intersects(QPointF pt)

@@ -25,6 +25,9 @@ ChessMain::ChessMain(QWidget *parent) : QWidget(parent)
     qDebug() << "init board";
     initBoard();
     qDebug() << "init complete";
+
+    turn = false; // True = Black, False = Red
+
     timer = new QTimer();
     timer->setInterval(50);
     timer->start();
@@ -95,15 +98,13 @@ void ChessMain::paintEvent(QPaintEvent *e)
 
 void ChessMain::mouseReleaseEvent(QMouseEvent *e)
 {
-    qDebug() << "MouseReleaseEvent" << e->button();
     if(e->button() == 1)
     {
         QPointF pt = e->localPos();
-        qDebug() << e->localPos();
 
         for(int i = 0; i < board.size(); i++)
         {
-            if((*(board.at(i))).intersects(pt))
+            if((*(board.at(i))).intersects(pt) && (*(board.at(i))).hasPiece())
             {
                 qDebug() << "Square" <<(*(board.at(i))).getNumber() << "selected.";
                 (*(board.at(i))).select();
@@ -112,6 +113,23 @@ void ChessMain::mouseReleaseEvent(QMouseEvent *e)
         }
     }
 }//end of mouseReleaseEvent
+
+void ChessMain::showMoves()
+{
+    if(turn)
+    {
+        for(int i = 0; i < board.size(); i++)
+        {
+            if((*(board.at(i))).isSelected())
+            {
+                ///THIS NEEDS TO GO TO A METHOD THAT TAKES INPUT RANGE
+                ///HIGHLIGHTS SQUARES IN FRONT OF PIECE ACCORDING TO RANGE
+                (*(black.at(board.at(i)->getNumber()))).getRange();
+            }
+        }
+
+    }
+}//end of showMoves
 
 void ChessMain::initBoard()
 {
@@ -122,7 +140,7 @@ void ChessMain::initBoard()
     {
         for(int j = 0; j < BOARD_WIDTH; j++)
         {
-            Board* bsqr = new Board(rectPosX, rectPosY, size, count);
+            Board* bsqr = new Board(rectPosX, rectPosY, size, count, false);
 
             board.push_back(bsqr);
 
@@ -145,6 +163,7 @@ void ChessMain::initBoard()
             char type = StartingPlacement[i][j];
             Pieces* pc = new Pieces((*(board.at(count))).getRectX() + 15, (*(board.at(count))).getRectY() + 5, 1, type, (*(board.at(count))).getNumber(), 1, 80, 100);
             red.push_back(pc);
+            (*(board.at(count))).setPiece();
             count++;
         }
 
@@ -162,6 +181,7 @@ void ChessMain::initBoard()
             char type = StartingPlacement[i][j];
             Pieces* pc = new Pieces(board.at(count)->getRectX() + 15, board.at(count)->getRectY() + 5, 1, type, board.at(count)->getNumber(), 0, 80, 100);
             black.push_back(pc);
+            (*(board.at(count))).setPiece();
             count--;
         }
     }
