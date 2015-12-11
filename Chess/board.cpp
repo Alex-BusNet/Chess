@@ -51,7 +51,3 @@ int Board::getNumber()
 {
     return this->number;
 }
-
-
-
-
