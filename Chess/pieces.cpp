@@ -11,6 +11,7 @@ Pieces::Pieces()
     height = 100;
     squareLoc = 0; //Stores which square the piece is currently standing on.
     active = true;
+    color = false; //False = Black, True = Red
     image = new QPixmap("../Chess/Images/Black/BlackPawn.png");
 }
 
@@ -22,6 +23,7 @@ Pieces::Pieces(int x, int y, int range, char type, int squareLoc, bool color)
     this->setLoc(squareLoc);
     this->setImage(type, color);
     this->setSize(width, height);
+    this->color = color;
 }
 
 Pieces::Pieces(int x, int y, int range, char type, int squareLoc, bool color, int w, int h)
@@ -162,6 +164,12 @@ int Pieces::getImageHeight()
 bool Pieces::isActive()
 {
     return active;
+}
+
+bool Pieces::isRed()
+{
+
+    return color;
 }
 
 char Pieces::getType()

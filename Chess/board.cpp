@@ -44,6 +44,11 @@ void Board::select()
     this->selected = !selected;
 }
 
+void Board::highlight()
+{
+    this->highlighted = !highlighted;
+}
+
 bool Board::hasPiece()
 {
     return containsPiece;
@@ -52,6 +57,11 @@ bool Board::hasPiece()
 void Board::setPiece()
 {
     this->containsPiece = !containsPiece;
+}
+
+void Board::setPieceColor(bool pColor)
+{
+    this->pieceColor = pColor;
 }
 
 bool Board::intersects(QPointF pt)
@@ -70,6 +80,16 @@ bool Board::intersects(QPointF pt)
 bool Board::isSelected()
 {
     return selected;
+}
+
+bool Board::isHighlighted()
+{
+    return this->highlighted;
+}
+
+bool Board::getPieceColor()
+{
+    return this->pieceColor;
 }
 
 int Board::getRectX()

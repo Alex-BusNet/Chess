@@ -27,6 +27,7 @@ ChessMain::ChessMain(QWidget *parent) : QWidget(parent)
     qDebug() << "init complete";
 
     turn = false; // True = Black, False = Red
+    pieceSelected = false;
 
     timer = new QTimer();
     timer->setInterval(50);
@@ -82,6 +83,11 @@ void ChessMain::paintEvent(QPaintEvent *e)
 
         painter.setPen(pen);
         painter.drawRect(square);
+
+        if((*(board.at(i))).isHighlighted())
+        {
+            painter.fillRect(square, Qt::green);
+        }
         painter.drawText((*(board.at(i))).getRectX() + 5, (*(board.at(i))).getRectY() + 90, QString::number(board.at(i)->getNumber()));
     }
 
@@ -106,28 +112,45 @@ void ChessMain::mouseReleaseEvent(QMouseEvent *e)
         {
             if((*(board.at(i))).intersects(pt) && (*(board.at(i))).hasPiece())
             {
-                qDebug() << "Square" <<(*(board.at(i))).getNumber() << "selected.";
-                (*(board.at(i))).select();
-                break;
+                if((*(board.at(i))).getPieceColor() == turn)
+                {
+                    if(pieceSelected)
+                    {
+                        for(int j = 0; j < board.size(); j++)
+                        {
+                            if((*(board.at(j))).isSelected())
+                            {
+                                (*(board.at(j))).select();
+                                ////DISABLE HIGHLIGHTED SQUARES HERE AS WELL
+                                break;
+                            }
+                        }
+                    }
+
+                    qDebug() << "Square" <<(*(board.at(i))).getNumber() << "selected.";
+                    (*(board.at(i))).select();
+                    pieceSelected = true;
+                    showMoves(2, (*(board.at(i))).getNumber());
+                    break;
+                }
             }
         }
     }
 }//end of mouseReleaseEvent
 
-void ChessMain::showMoves()
+void ChessMain::showMoves(int range, int location)
 {
-    if(turn)
+    for(int i = 0; i < range; i++)
     {
-        for(int i = 0; i < board.size(); i++)
+        if((*(board.at(i))).getPieceColor() == 0)
         {
-            if((*(board.at(i))).isSelected())
-            {
-                ///THIS NEEDS TO GO TO A METHOD THAT TAKES INPUT RANGE
-                ///HIGHLIGHTS SQUARES IN FRONT OF PIECE ACCORDING TO RANGE
-                (*(black.at(board.at(i)->getNumber()))).getRange();
-            }
+            qDebug() << "Highlighting:" << (*(board.at(location - (8 * (i + 1))))).getNumber();
+            (*(board.at(location - (8 * (i + 1))))).highlight();
         }
-
+        else if ((*(board.at(i))).getPieceColor() == 1)
+        {
+            (*(board.at(location + 8))).highlight();
+        }
     }
 }//end of showMoves
 
@@ -164,6 +187,7 @@ void ChessMain::initBoard()
             Pieces* pc = new Pieces((*(board.at(count))).getRectX() + 15, (*(board.at(count))).getRectY() + 5, 1, type, (*(board.at(count))).getNumber(), 1, 80, 100);
             red.push_back(pc);
             (*(board.at(count))).setPiece();
+            (*(board.at(count))).setPieceColor(true);
             count++;
         }
 
@@ -182,6 +206,7 @@ void ChessMain::initBoard()
             Pieces* pc = new Pieces(board.at(count)->getRectX() + 15, board.at(count)->getRectY() + 5, 1, type, board.at(count)->getNumber(), 0, 80, 100);
             black.push_back(pc);
             (*(board.at(count))).setPiece();
+            (*(board.at(i))).setPieceColor(false);
             count--;
         }
     }

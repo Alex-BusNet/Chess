@@ -13,7 +13,7 @@ class Pieces
 private:
     int posX, posY, range, squareLoc, width, height;
     char type;
-    bool active;
+    bool active, color;
     QPixmap *image;
 
     enum PieceTypes{PAWN = 'P', ROOK = 'R', KNIGHT = 'N', BISHOP = 'B', QUEEN = 'Q', KING = 'K'};
@@ -44,7 +44,9 @@ public:
     int getLoc();
     int getImageWidth();
     int getImageHeight();
+
     bool isActive();
+    bool isRed();
 
     char getType();
 
