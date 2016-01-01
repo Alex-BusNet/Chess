@@ -9,6 +9,7 @@ class Board
 {
 private:
     int rectPosX, rectPosY, size, number;
+    enum PieceTypes{PAWN = 'P', ROOK = 'R', KNIGHT = 'N', BISHOP = 'B', QUEEN = 'Q', KING = 'K'};
     bool selected, highlighted, containsPiece, pieceColor;
 
 public:
@@ -23,6 +24,7 @@ public:
     void select();
     void highlight();
     void setPiece();
+    void drawMoves(char type);
     void setPieceColor(bool pColor);
 
     bool hasPiece();
@@ -30,6 +32,7 @@ public:
     bool isSelected();
     bool isHighlighted();
     bool getPieceColor();
+
 
     int getRectX();
     int getRectY();

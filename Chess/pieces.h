@@ -39,6 +39,8 @@ public:
     void drawPiece(QPainter &paint);
 
     int getRange();
+    int getRangeY(char type);
+    int getRangeX(char type);
     int getPosX();
     int getPosY();
     int getLoc();

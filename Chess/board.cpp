@@ -59,6 +59,19 @@ void Board::setPiece()
     this->containsPiece = !containsPiece;
 }
 
+void Board::drawMoves(char type)
+{
+    if(type == PAWN)
+    {
+
+    }
+}
+
+void Board::setHighlight()
+{
+    this->highlighted == !highlighted;
+}
+
 void Board::setPieceColor(bool pColor)
 {
     this->pieceColor = pColor;

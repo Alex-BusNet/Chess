@@ -81,6 +81,13 @@ void ChessMain::paintEvent(QPaintEvent *e)
             pen.setWidth(1);
         }
 
+        if((*(board.at(i))).isHighlighted())
+        {
+            QBrush br;
+            br.setColor(Qt::green);
+            br.setStyle();
+        }
+
         painter.setPen(pen);
 
         if((*(board.at(i))).isHighlighted())
