@@ -18,7 +18,7 @@ class ChessMain : public QWidget
 
 private:
     int BOARD_WIDTH, BOARD_HEIGHT, rectPosX, rectPosY, size;
-    bool turn;
+    bool turn, pieceSelected;
     QTimer *timer;
 
 public:
@@ -31,7 +31,7 @@ public:
 
     void paintEvent(QPaintEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
-    void showMoves();
+    void showMoves(int range, int location);
     void move();
 
     void initBoard();
