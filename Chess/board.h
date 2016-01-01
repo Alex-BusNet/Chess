@@ -10,7 +10,7 @@ class Board
 private:
     int rectPosX, rectPosY, size, number;
     bool selected, highlighted, containsPiece;
-
+    enum PieceTypes{PAWN = 'P', ROOK = 'R', KNIGHT = 'N', BISHOP = 'B', QUEEN = 'Q', KING = 'K'};
 public:
     Board();
     Board(int x, int y, int size, int number, bool piece);
@@ -22,10 +22,13 @@ public:
     void setNumber(int number);
     void select();
     void setPiece();
+    void drawMoves(char type);
+    void setHighlight();
 
     bool hasPiece();
     bool intersects(QPointF pt);
     bool isSelected();
+    bool isHighlighted();
 
     int getRectX();
     int getRectY();

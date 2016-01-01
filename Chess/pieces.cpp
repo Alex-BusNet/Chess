@@ -119,6 +119,11 @@ void Pieces::setImage(char type, bool color, int width, int height)
     this->setImage(type, color);
 }
 
+void Pieces::showMoves()
+{
+
+}
+
 void Pieces::drawPiece(QPainter &paint, int w, int h)
 {
     paint.drawPixmap(this->posX, this->posY, w, h, *image);
@@ -132,6 +137,42 @@ void Pieces::drawPiece(QPainter &paint)
 int Pieces::getRange()
 {
     return this->range;
+}
+
+int Pieces::getRangeY(char type)
+{
+    if(type == PAWN)
+        return 1;
+    else if(type == ROOK)
+        return 8;
+    else if(type == KNIGHT)
+        return 3;
+    else if(type == BISHOP)
+        return 1;
+    else if(type == QUEEN)
+        return 8;
+    else if(type == KING)
+        return 1;
+    else
+        return 1;
+}
+
+int Pieces::getRangeX(char type)
+{
+    if(type == PAWN)
+        return 1;
+    else if(type == ROOK)
+        return 8;
+    else if(type == KNIGHT)
+        return 1;
+    else if(type == BISHOP)
+        return 1;
+    else if(type == QUEEN)
+        return 8;
+    else if(type == KING)
+        return 1;
+    else
+        return 1;
 }
 
 int Pieces::getPosX()

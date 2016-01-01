@@ -54,6 +54,19 @@ void Board::setPiece()
     this->containsPiece = !containsPiece;
 }
 
+void Board::drawMoves(char type)
+{
+    if(type == PAWN)
+    {
+
+    }
+}
+
+void Board::setHighlight()
+{
+    this->highlighted == !highlighted;
+}
+
 bool Board::intersects(QPointF pt)
 {
     if(this->rectPosX < pt.x() && this->rectPosX + size > pt.x())
@@ -70,6 +83,11 @@ bool Board::intersects(QPointF pt)
 bool Board::isSelected()
 {
     return selected;
+}
+
+bool Board::isHighlighted()
+{
+    return highlighted;
 }
 
 int Board::getRectX()

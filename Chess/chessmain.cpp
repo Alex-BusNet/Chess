@@ -80,6 +80,13 @@ void ChessMain::paintEvent(QPaintEvent *e)
             pen.setWidth(1);
         }
 
+        if((*(board.at(i))).isHighlighted())
+        {
+            QBrush br;
+            br.setColor(Qt::green);
+            br.setStyle();
+        }
+
         painter.setPen(pen);
         painter.drawRect(square);
         painter.drawText((*(board.at(i))).getRectX() + 5, (*(board.at(i))).getRectY() + 90, QString::number(board.at(i)->getNumber()));
@@ -108,6 +115,7 @@ void ChessMain::mouseReleaseEvent(QMouseEvent *e)
             {
                 qDebug() << "Square" <<(*(board.at(i))).getNumber() << "selected.";
                 (*(board.at(i))).select();
+                this->showMoves();
                 break;
             }
         }
@@ -116,18 +124,55 @@ void ChessMain::mouseReleaseEvent(QMouseEvent *e)
 
 void ChessMain::showMoves()
 {
+    qDebug() << "Show Moves";
     if(turn)
     {
+        char type;
+        int rangeX, rangeY;
+
         for(int i = 0; i < board.size(); i++)
         {
             if((*(board.at(i))).isSelected())
             {
                 ///THIS NEEDS TO GO TO A METHOD THAT TAKES INPUT RANGE
                 ///HIGHLIGHTS SQUARES IN FRONT OF PIECE ACCORDING TO RANGE
-                (*(black.at(board.at(i)->getNumber()))).getRange();
-            }
-        }
+                type = (*(black.at((*((board.at(i)))).getNumber()))).getType();
 
+                rangeY = (*(black.at((*((board.at(i)))).getNumber()))).getRangeY(type);
+                rangeX = (*(black.at((*((board.at(i)))).getNumber()))).getRangeX(type);
+
+                for (int j = 0; j < rangeX; j++)
+                {
+                    if((*(board.at(i))).getNumber() + j != 0)
+                    {
+                        if((*(board.at(i))).getNumber() + j != 8)
+                        {
+                            if((*(board.at(i))).getNumber() + j != 16)
+                            {
+                                if((*(board.at(i))).getNumber() + j != 24)
+                                {
+                                    if((*(board.at(i))).getNumber() + j != 32)
+                                    {
+                                        if((*(board.at(i))).getNumber() + j != 40)
+                                        {
+                                            if((*(board.at(i))).getNumber() + j != 48)
+                                            {
+                                                if((*(board.at(i))).getNumber() + j != 56)
+                                                {
+                                                    (*(board.at(i + j))).setHighlight();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+//                    (*(board.at(i - j))).setHighlight();
+                }
+            }
+
+        }
     }
 }//end of showMoves
 
