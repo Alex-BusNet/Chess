@@ -31,7 +31,7 @@ public:
 
     void paintEvent(QPaintEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
-    void showMoves(int range, int location);
+    void showMoves(int location);
     void move();
 
     void initBoard();

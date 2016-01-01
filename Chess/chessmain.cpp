@@ -81,13 +81,6 @@ void ChessMain::paintEvent(QPaintEvent *e)
             pen.setWidth(1);
         }
 
-        if((*(board.at(i))).isHighlighted())
-        {
-            QBrush br;
-            br.setColor(Qt::green);
-            br.setStyle();
-        }
-
         painter.setPen(pen);
 
         if((*(board.at(i))).isHighlighted())
@@ -119,47 +112,87 @@ void ChessMain::mouseReleaseEvent(QMouseEvent *e)
     if(e->button() == 1)
     {
         QPointF pt = e->localPos();
-
+        qDebug() << "Clicked at point:" << pt;
         for(int i = 0; i < board.size(); i++)
         {
-            if((*(board.at(i))).intersects(pt) && (*(board.at(i))).hasPiece())
+            if((*(board.at(i))).intersects(pt))
             {
-                if((*(board.at(i))).getPieceColor() == turn)
+                qDebug() << "Point intersects square:" << (*(board.at(i))).getNumber();
+
+                if((*(board.at(i))).hasPiece())
                 {
-                    if(pieceSelected)
+                    qDebug() << "Square:" << (*(board.at(i))).getNumber() << "Contains piece";
+
+                    if((*(board.at(i))).getPieceColor() == turn)
                     {
-                        for(int j = 0; j < board.size(); j++)
+                        if(pieceSelected)
                         {
-                            if((*(board.at(j))).isSelected())
+                            for(int j = 0; j < board.size(); j++)
                             {
-                                showMoves(2, (*(board.at(j))).getNumber());
-                                (*(board.at(j))).select();
-                                pieceSelected = false; //Reset the piece selected flag
-                                break;
+                                if((*(board.at(j))).isSelected())
+                                {
+                                    showMoves((*(board.at(j))).getNumber());
+                                    (*(board.at(j))).select();
+                                    pieceSelected = false; //Reset the piece selected flag
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    if((*(board.at(i))).getNumber() != lastPieceSelected)
-                    {
-                        (*(board.at(i))).select();
-                        pieceSelected = true; //sets the flag indicating there is a piece currently selected
-                        showMoves(2, (*(board.at(i))).getNumber());
-                        lastPieceSelected = (*(board.at(i))).getNumber();
-                    }
+                        if((*(board.at(i))).getNumber() != lastPieceSelected)
+                        {
+                            (*(board.at(i))).select();
+                            pieceSelected = true; //sets the flag indicating there is a piece currently selected
 
-                    break;
+                            qDebug() << "Clicked in square:" << (*(board.at(i))).getNumber() << "Last Piece Selected::" << lastPieceSelected;
+                            showMoves((*(board.at(i))).getNumber());
+                            lastPieceSelected = (*(board.at(i))).getNumber();
+                        }
+
+
+                        break;
+                    }
                 }
             }
         }
     }
 }//end of mouseReleaseEvent
 
-void ChessMain::showMoves(int range, int location)
+void ChessMain::showMoves(int location)
 {
+    int range = 0, index = 0;
+    char type = 'P';
+
+    //Gets the Range of the piece inside the selected square
+    if((*(board.at(location))).getPieceColor() == 0)
+    {
+        for(int i = 0; i < black.size(); i++)
+        {
+            if(location == black.at(i)->getLoc())
+            {
+                range = black.at(i)->getRange();
+                break;
+            }
+        }
+    }
+    else if((*(board.at(location))).getPieceColor() == 1)
+    {
+        for(int i = 0; i < red.size(); i++)
+        {
+            if(location == red.at(i)->getLoc())
+            {
+                range =  red.at(i)->getRange();
+                break;
+            }
+        }
+    }
+
+    qDebug() << "Piece:" << type << "has range:" << range;
+    //Highlights the correct squares corresponding to the range of the selected piece.
+    ///Currently only works in the Y-direction. Diagonals and horizontals not supported.
     for(int i = 0; i < range; i++)
     {
-        if((*(board.at(i))).getPieceColor() == 0)
+        if((*(board.at(location))).getPieceColor() == 0)
         {
             if(!((*(board.at(location - (8 * (i + 1))))).hasPiece()))
             {
@@ -170,7 +203,7 @@ void ChessMain::showMoves(int range, int location)
                 break;
             }
         }
-        else if ((*(board.at(i))).getPieceColor() == 1)
+        else if ((*(board.at(location))).getPieceColor() == 1)
         {
             if(!((*(board.at(location + (8 * (i + 1))))).hasPiece()))
             {
@@ -187,18 +220,27 @@ void ChessMain::showMoves(int range, int location)
 void ChessMain::initBoard()
 {
     int count = 0;
+    int indexCount = 0;
 
     qDebug() << "Generating Board";
     for(int i = 0; i < BOARD_HEIGHT; i++)
     {
         for(int j = 0; j < BOARD_WIDTH; j++)
         {
-            Board* bsqr = new Board(rectPosX, rectPosY, size, count, false);
+            Board* bsqr = new Board(rectPosX, rectPosY, size, count, indexCount, false);
 
             board.push_back(bsqr);
 
             rectPosX += size + 1;
             count++;
+
+            qDebug() << "indexCount:" << indexCount;
+
+            if(indexCount < 16)
+                indexCount++;
+            else
+                indexCount = 0;
+
         }
 
         rectPosY += size + 1;
@@ -215,6 +257,7 @@ void ChessMain::initBoard()
         {
             char type = StartingPlacement[i][j];
             Pieces* pc = new Pieces((*(board.at(count))).getRectX() + 15, (*(board.at(count))).getRectY() + 5, 1, type, (*(board.at(count))).getNumber(), 1, 80, 100);
+            pc->setRange(pc->getRangeY(type));
             red.push_back(pc);
             (*(board.at(count))).setPiece();
             (*(board.at(count))).setPieceColor(true);
@@ -234,6 +277,7 @@ void ChessMain::initBoard()
         {
             char type = StartingPlacement[i][j];
             Pieces* pc = new Pieces(board.at(count)->getRectX() + 15, board.at(count)->getRectY() + 5, 1, type, board.at(count)->getNumber(), 0, 80, 100);
+            pc->setRange(pc->getRangeY(type));
             black.push_back(pc);
             (*(board.at(count))).setPiece();
             (*(board.at(i))).setPieceColor(false);

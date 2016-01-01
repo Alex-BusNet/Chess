@@ -17,12 +17,13 @@ Board::Board()
     containsPiece = false;
 }
 
-Board::Board(int x, int y, int size, int number, bool piece)
+Board::Board(int x, int y, int size, int number, int indexValue, bool piece)
 {
     this->setNumber(number);
     this->rectPosX = x;
     this->rectPosY = y;
     this->setSize(size);
+    this->setIndex(indexValue);
     selected = false;
     highlighted = false;
     containsPiece = piece;
@@ -37,6 +38,11 @@ void Board::setSize(int size)
 void Board::setNumber(int number)
 {
     this->number = number;
+}
+
+void Board::setIndex(int index)
+{
+    this->indexValue = index;
 }
 
 void Board::select()
@@ -65,11 +71,6 @@ void Board::drawMoves(char type)
     {
 
     }
-}
-
-void Board::setHighlight()
-{
-    this->highlighted == !highlighted;
 }
 
 void Board::setPieceColor(bool pColor)
@@ -123,4 +124,9 @@ int Board::getSize()
 int Board::getNumber()
 {
     return this->number;
+}
+
+int Board::getIndex()
+{
+    return this->indexValue;
 }

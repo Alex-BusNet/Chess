@@ -8,19 +8,20 @@ using namespace std;
 class Board
 {
 private:
-    int rectPosX, rectPosY, size, number;
+    int rectPosX, rectPosY, size, number, indexValue;
     enum PieceTypes{PAWN = 'P', ROOK = 'R', KNIGHT = 'N', BISHOP = 'B', QUEEN = 'Q', KING = 'K'};
     bool selected, highlighted, containsPiece, pieceColor;
 
 public:
     Board();
-    Board(int x, int y, int size, int number, bool piece);
+    Board(int x, int y, int size, int number, int indexValue, bool piece);
 
 //    void drawBoard(QPainter &paint);
     void initBoard();
     void setPos(int x, int y);
     void setSize(int size);
     void setNumber(int number);
+    void setIndex(int index);
     void select();
     void highlight();
     void setPiece();
@@ -38,6 +39,7 @@ public:
     int getRectY();
     int getSize();
     int getNumber();
+    int getIndex();
 };
 
 #endif // BOARD_H
