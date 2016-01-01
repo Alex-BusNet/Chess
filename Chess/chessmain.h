@@ -17,8 +17,8 @@ class ChessMain : public QWidget
     Q_OBJECT
 
 private:
-    int BOARD_WIDTH, BOARD_HEIGHT, rectPosX, rectPosY, size;
-    bool turn, pieceSelected;
+    int BOARD_WIDTH, BOARD_HEIGHT, rectPosX, rectPosY, size, lastPieceSelected;
+    bool turn, pieceSelected, opponentHighlighted;
     QTimer *timer;
 
 public:

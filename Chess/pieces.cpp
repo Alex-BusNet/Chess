@@ -76,7 +76,7 @@ void Pieces::setSize(int width, int height)
 void Pieces::setImage(char type, bool color)
 {
     QString imageLoc = "../Chess/Images/%1/%1%2_OLD.png";
-    QString pieceType = "Pawn"; //Default
+    QString pieceType = "Pawn"; ///Default
 
     //Color = 0: Black
     //Color = 1: Red
@@ -168,7 +168,6 @@ bool Pieces::isActive()
 
 bool Pieces::isRed()
 {
-
     return color;
 }
 
