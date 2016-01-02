@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QMouseEvent>
 #include <QPoint>
+#include <QPushButton>
 #include "board.h"
 #include "pieces.h"
 
@@ -18,8 +19,12 @@ class ChessMain : public QWidget
 
 private:
     int BOARD_WIDTH, BOARD_HEIGHT, rectPosX, rectPosY, size, lastPieceSelected;
-    bool turn, pieceSelected, opponentHighlighted;
+    bool pieceSelected, opponentHighlighted;
+    enum turn {RED = 'r', BLACK = 'b', EMPTY = 'e'};
+    char currentTurn;
+
     QTimer *timer;
+    QPushButton *endTurn, *endGame;
 
 public:
     explicit ChessMain(QWidget* parent = 0);
@@ -38,6 +43,7 @@ public:
 
 private slots:
     void updateGame();
+    void nextTurn();
 };
 
 #endif // CHESSMAIN_H

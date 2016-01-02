@@ -5,7 +5,8 @@ Pieces::Pieces()
 {
     posX = 0;
     posY = 0;
-    range = 1;
+    rangeX = 1;
+    rangeY = 1;
     type = 'P';
     width = 80;
     height = 100;
@@ -15,10 +16,10 @@ Pieces::Pieces()
     image = new QPixmap("../Chess/Images/Black/BlackPawn.png");
 }
 
-Pieces::Pieces(int x, int y, int range, char type, int squareLoc, bool color)
+Pieces::Pieces(int x, int y, char type, int squareLoc, char color)
 {
     this->setPos(x, y);
-    this->setRange(range);
+    this->setRange();
     this->setType(type);
     this->setLoc(squareLoc);
     this->setImage(type, color);
@@ -26,11 +27,11 @@ Pieces::Pieces(int x, int y, int range, char type, int squareLoc, bool color)
     this->color = color;
 }
 
-Pieces::Pieces(int x, int y, int range, char type, int squareLoc, bool color, int w, int h)
+Pieces::Pieces(int x, int y, char type, int squareLoc, char color, int w, int h)
 {
     this->setPos(x, y);
-    this->setRange(range);
     this->setType(type);
+    this->setRange();
     this->setLoc(squareLoc);
     this->setImage(type, color);
     this->setSize(w, h);
@@ -47,9 +48,10 @@ void Pieces::setPos(int x, int y)
     this->posY = y;
 }
 
-void Pieces::setRange(int range)
+void Pieces::setRange()
 {
-    this->range = range;
+    setRangeY(type);
+    setRangeX(type);
 }
 
 void Pieces::setType(char type)
@@ -73,13 +75,10 @@ void Pieces::setSize(int width, int height)
     this->height = height;
 }
 
-void Pieces::setImage(char type, bool color)
+void Pieces::setImage(char type, char color)
 {
     QString imageLoc = "../Chess/Images/%1/%1%2_OLD.png";
     QString pieceType = "Pawn"; ///Default
-
-    //Color = 0: Black
-    //Color = 1: Red
 
     switch(type)
     {
@@ -103,7 +102,7 @@ void Pieces::setImage(char type, bool color)
             break;
     }
 
-    if(color)
+    if(color == 'r')
     {
 //        qDebug() << "imageLoc:" << imageLoc.arg("Red").arg(pieceType);
         image = new QPixmap(imageLoc.arg("Red").arg(pieceType));
@@ -115,7 +114,7 @@ void Pieces::setImage(char type, bool color)
     }
 }
 
-void Pieces::setImage(char type, bool color, int width, int height)
+void Pieces::setImage(char type, char color, int width, int height)
 {
     this->setSize(width, height);
     this->setImage(type, color);
@@ -136,45 +135,40 @@ void Pieces::drawPiece(QPainter &paint)
     paint.drawPixmap(this->posX, this->posY, width, height, *image);
 }
 
-int Pieces::getRange()
-{
-    return this->range;
-}
-
-int Pieces::getRangeY(char type)
+void Pieces::setRangeY(char type)
 {
     if(type == PAWN)
-        return 1;
+        rangeY = 1;
     else if(type == ROOK)
-        return 8;
+        rangeY = 7;
     else if(type == KNIGHT)
-        return 3;
+        rangeY = 3;
     else if(type == BISHOP)
-        return 1;
+        rangeY = 1;
     else if(type == QUEEN)
-        return 8;
+        rangeY = 7;
     else if(type == KING)
-        return 1;
+        rangeY = 1;
     else
-        return 1;
+        rangeY = 1;
 }
 
-int Pieces::getRangeX(char type)
+void Pieces::setRangeX(char type)
 {
     if(type == PAWN)
-        return 1;
+        rangeX = 1;
     else if(type == ROOK)
-        return 8;
+        rangeX = 7;
     else if(type == KNIGHT)
-        return 1;
+        rangeX = 3;
     else if(type == BISHOP)
-        return 1;
+        rangeX = 1;
     else if(type == QUEEN)
-        return 8;
+        rangeX = 7;
     else if(type == KING)
-        return 1;
+        rangeX = 1;
     else
-        return 1;
+        rangeX = 1;
 }
 
 int Pieces::getPosX()
@@ -185,6 +179,16 @@ int Pieces::getPosX()
 int Pieces::getPosY()
 {
     return this->posY;
+}
+
+int Pieces::getRangeX()
+{
+    return this->rangeX;
+}
+
+int Pieces::getRangeY()
+{
+    return this->rangeY;
 }
 
 int Pieces::getLoc()
@@ -207,12 +211,12 @@ bool Pieces::isActive()
     return active;
 }
 
-bool Pieces::isRed()
-{
-    return color;
-}
-
 char Pieces::getType()
 {
     return this->type;
+}
+
+char Pieces::getColor()
+{
+    return this->color;
 }

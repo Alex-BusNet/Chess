@@ -13,11 +13,12 @@ Board::Board()
     rectPosX = 0;
     rectPosY = 0;
     selected = false;
-    highlighted = false;
+    highlightedMove = false;
+    highlightedEnemy = false;
     containsPiece = false;
 }
 
-Board::Board(int x, int y, int size, int number, int indexValue, bool piece)
+Board::Board(int x, int y, int size, int number, int indexValue, bool piece, char color)
 {
     this->setNumber(number);
     this->rectPosX = x;
@@ -25,8 +26,10 @@ Board::Board(int x, int y, int size, int number, int indexValue, bool piece)
     this->setSize(size);
     this->setIndex(indexValue);
     selected = false;
-    highlighted = false;
+    highlightedMove = false;
+    highlightedEnemy = false;
     containsPiece = piece;
+    this->setPieceColor(color);
     QRect* square = new QRect(x, y, size, size);
 }
 
@@ -50,9 +53,14 @@ void Board::select()
     this->selected = !selected;
 }
 
-void Board::highlight()
+void Board::highlightMove()
 {
-    this->highlighted = !highlighted;
+    this->highlightedMove = !highlightedMove;
+}
+
+void Board::highlightEnemy()
+{
+    this->highlightedEnemy = !highlightedEnemy;
 }
 
 bool Board::hasPiece()
@@ -73,7 +81,7 @@ void Board::drawMoves(char type)
     }
 }
 
-void Board::setPieceColor(bool pColor)
+void Board::setPieceColor(char pColor)
 {
     this->pieceColor = pColor;
 }
@@ -96,12 +104,17 @@ bool Board::isSelected()
     return selected;
 }
 
-bool Board::isHighlighted()
+bool Board::isEnemyHighlighted()
 {
-    return this->highlighted;
+    return this->highlightedEnemy;
 }
 
-bool Board::getPieceColor()
+bool Board::isMoveHighlighted()
+{
+    return this->highlightedMove;
+}
+
+char Board::getPieceColor()
 {
     return this->pieceColor;
 }

@@ -10,11 +10,12 @@ class Board
 private:
     int rectPosX, rectPosY, size, number, indexValue;
     enum PieceTypes{PAWN = 'P', ROOK = 'R', KNIGHT = 'N', BISHOP = 'B', QUEEN = 'Q', KING = 'K'};
-    bool selected, highlighted, containsPiece, pieceColor;
+    bool selected, highlightedMove, highlightedEnemy, containsPiece;
+    char pieceColor;
 
 public:
     Board();
-    Board(int x, int y, int size, int number, int indexValue, bool piece);
+    Board(int x, int y, int size, int number, int indexValue, bool piece, char color);
 
 //    void drawBoard(QPainter &paint);
     void initBoard();
@@ -23,17 +24,19 @@ public:
     void setNumber(int number);
     void setIndex(int index);
     void select();
-    void highlight();
+    void highlightMove();
+    void highlightEnemy();
     void setPiece();
     void drawMoves(char type);
-    void setPieceColor(bool pColor);
+    void setPieceColor(char pColor);
 
     bool hasPiece();
     bool intersects(QPointF pt);
     bool isSelected();
-    bool isHighlighted();
-    bool getPieceColor();
+    bool isMoveHighlighted();
+    bool isEnemyHighlighted();
 
+    char getPieceColor();
 
     int getRectX();
     int getRectY();

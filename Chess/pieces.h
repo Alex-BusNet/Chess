@@ -11,46 +11,48 @@ using namespace std;
 class Pieces
 {
 private:
-    int posX, posY, range, squareLoc, width, height;
-    char type;
-    bool active, color;
+    int posX, posY, rangeY, rangeX, squareLoc, width, height;
+    char type, color;
+    bool active;
     QPixmap *image;
 
     enum PieceTypes{PAWN = 'P', ROOK = 'R', KNIGHT = 'N', BISHOP = 'B', QUEEN = 'Q', KING = 'K'};
 
+    void setRangeY(char type);
+    void setRangeX(char type);
+
 public:
     Pieces();
-    Pieces(int x, int y, int range, char type, int squareLoc, bool color);
-    Pieces(int x, int y, int range, char type, int squareLoc, bool color, int w, int h);
+    Pieces(int x, int y, char type, int squareLoc, char color);
+    Pieces(int x, int y, char type, int squareLoc, char color, int w, int h);
     ~Pieces();
 
     void setPos(int x, int y);
-    void setRange(int range);
+    void setRange();
     void setType(char type);
     void setLoc(int squareLoc);
     void setActive();
     void setSize(int width, int height);
-    void setImage(char type, bool color);
-    void setImage(char type, bool color, int width, int height);
+    void setImage(char type, char color);
+    void setImage(char type, char color, int width, int height);
     void showMoves();
     void move();
 
     void drawPiece(QPainter &paint, int width, int h);
     void drawPiece(QPainter &paint);
 
-    int getRange();
-    int getRangeY(char type);
-    int getRangeX(char type);
     int getPosX();
     int getPosY();
+    int getRangeX();
+    int getRangeY();
     int getLoc();
     int getImageWidth();
     int getImageHeight();
 
     bool isActive();
-    bool isRed();
 
     char getType();
+    char getColor();
 
     QPixmap &getImage();
 };
