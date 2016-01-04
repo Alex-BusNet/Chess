@@ -27,7 +27,6 @@ public:
     void highlightMove();
     void highlightEnemy();
     void setPiece();
-    void drawMoves(char type);
     void setPieceColor(char pColor);
 
     bool hasPiece();

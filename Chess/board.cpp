@@ -73,14 +73,6 @@ void Board::setPiece()
     this->containsPiece = !containsPiece;
 }
 
-void Board::drawMoves(char type)
-{
-    if(type == PAWN)
-    {
-
-    }
-}
-
 void Board::setPieceColor(char pColor)
 {
     this->pieceColor = pColor;
@@ -101,7 +93,7 @@ bool Board::intersects(QPointF pt)
 
 bool Board::isSelected()
 {
-    return selected;
+    return this->selected;
 }
 
 bool Board::isEnemyHighlighted()

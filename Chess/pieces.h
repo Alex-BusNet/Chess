@@ -23,7 +23,7 @@ private:
 
 public:
     Pieces();
-    Pieces(int x, int y, char type, int squareLoc, char color);
+    Pieces(int x, int y, char type, int squareLoc, char pColor);
     Pieces(int x, int y, char type, int squareLoc, char color, int w, int h);
     ~Pieces();
 
@@ -35,8 +35,6 @@ public:
     void setSize(int width, int height);
     void setImage(char type, char color);
     void setImage(char type, char color, int width, int height);
-    void showMoves();
-    void move();
 
     void drawPiece(QPainter &paint, int width, int h);
     void drawPiece(QPainter &paint);

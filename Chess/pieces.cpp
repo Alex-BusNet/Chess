@@ -12,29 +12,30 @@ Pieces::Pieces()
     height = 100;
     squareLoc = 0; //Stores which square the piece is currently standing on.
     active = true;
-    color = false; //False = Black, True = Red
+    color = 'b';
     image = new QPixmap("../Chess/Images/Black/BlackPawn.png");
 }
 
-Pieces::Pieces(int x, int y, char type, int squareLoc, char color)
+Pieces::Pieces(int x, int y, char type, int squareLoc, char pColor)
 {
     this->setPos(x, y);
     this->setRange();
     this->setType(type);
     this->setLoc(squareLoc);
-    this->setImage(type, color);
+    this->setImage(type, pColor);
     this->setSize(width, height);
-    this->color = color;
+    this->color = pColor;
 }
 
-Pieces::Pieces(int x, int y, char type, int squareLoc, char color, int w, int h)
+Pieces::Pieces(int x, int y, char type, int squareLoc, char pColor, int w, int h)
 {
     this->setPos(x, y);
-    this->setType(type);
     this->setRange();
+    this->setType(type);
     this->setLoc(squareLoc);
-    this->setImage(type, color);
+    this->setImage(type, pColor);
     this->setSize(w, h);
+    this->color = pColor;
 }
 
 Pieces::~Pieces()
@@ -118,11 +119,6 @@ void Pieces::setImage(char type, char color, int width, int height)
 {
     this->setSize(width, height);
     this->setImage(type, color);
-}
-
-void Pieces::showMoves()
-{
-
 }
 
 void Pieces::drawPiece(QPainter &paint, int w, int h)

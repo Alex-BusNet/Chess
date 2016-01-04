@@ -1,6 +1,8 @@
 #include "chessmain.h"
 #include "QDebug"
 #include "pieces.h"
+#include "string"
+#include "sstream"
 
 using namespace std;
 
@@ -107,17 +109,28 @@ void ChessMain::paintEvent(QPaintEvent *e)
         }
 
         painter.drawRect(square);
+        pen.setColor(Qt::black);
+        painter.setPen(pen);
+        //Board Location numbers:
         painter.drawText((*(board.at(i))).getRectX() + 5, (*(board.at(i))).getRectY() + 90, QString::number(board.at(i)->getNumber()));
+        //Board Index values:
+        painter.drawText((*(board.at(i))).getRectX() + 5, (*(board.at(i))).getRectY() + 80, QString::number(board.at(i)->getIndex()));
     }
 
     for(int i = 0; i < red.size(); i++)
     {
-        (*(red.at(i))).drawPiece(painter);
+        if((*(red.at(i))).isActive())
+        {
+            (*(red.at(i))).drawPiece(painter);
+        }
     }
 
     for(int i = 0; i < black.size(); i++)
     {
-        (*(black.at(i))).drawPiece(painter);
+        if((*(black.at(i))).isActive())
+        {
+            (*(black.at(i))).drawPiece(painter);
+        }
     }
 
     QFont* GameInfoFont = new QFont();
@@ -154,7 +167,7 @@ void ChessMain::mouseReleaseEvent(QMouseEvent *e)
                                 if((*(board.at(j))).isSelected())
                                 {
                                     showMoves((*(board.at(j))).getNumber());
-                                    qDebug() <<"Deselecting Piece";
+                                    qDebug() <<"Deselecting Piece at" << (*(board.at(j))).getNumber();
                                     (*(board.at(j))).select();
                                     pieceSelected = false; //Reset the piece selected flag
                                     break;
@@ -173,6 +186,19 @@ void ChessMain::mouseReleaseEvent(QMouseEvent *e)
                         }
 
                         break;
+                    }
+                }
+                else if(pieceSelected)
+                {
+                    qDebug() << "Piece selected and Blank square selected";
+                    if((*(board.at(i))).isMoveHighlighted())
+                    {
+                        qDebug() << "Move square selected";
+                        makeMove(lastPieceSelected, (*(board.at(i))).getNumber());
+                    }
+                    else if((*(board.at(i))).isEnemyHighlighted())
+                    {
+                        attack();
                     }
                 }
             }
@@ -212,7 +238,7 @@ void ChessMain::showMoves(int location)
     }
 
     //Highlights the correct squares corresponding to the range of the selected piece.
-    ///Currently only works in the Y-direction. Diagonals and horizontals not supported.
+    ///Currently only works in the Y-direction and for Knight pieces. Diagonals and horizontals not supported.
     for(int i = 0; i < range; i++)
     {
         if((*(board.at(location))).getPieceColor() == currentTurn)
@@ -401,52 +427,105 @@ void ChessMain::showMoves(int location)
                 break; //Ends the loop after selecting the appropriate squares for the Knight.
             }
 
-            qDebug() << "Non-Knight Piece";
-
-            if(!((*(board.at(location - (8 * (i + 1))))).hasPiece()))
+            if((*(board.at(location))).getPieceColor() == BLACK)
             {
-                qDebug() <<"Selecting Empty Square";
-                (*(board.at(location - (8 * (i + 1))))).highlightMove();
-            }
-            else
-            {
-                if((*(board.at(location - (8 * (i + 1))))).getPieceColor() != currentTurn && (*(board.at(location - 5))).getPieceColor() != EMPTY)
+                if(!((*(board.at(location - (8 * (i + 1))))).hasPiece()))
                 {
-                    qDebug() <<"Enemy Piece";
-                    (*(board.at(location - (8 * (i + 1))))).highlightEnemy();
-                    break; //End loop if Enemy is found
+                    qDebug() <<"Selecting Empty Square:" << (*(board.at(location - (8 *(i + 1))))).getNumber();
+                    (*(board.at(location - (8 * (i + 1))))).highlightMove();
                 }
                 else
                 {
-                    qDebug() <<"Friendly Piece";
-                    break; //End loop if Friendly is found
+                    if((*(board.at(location - (8 * (i + 1))))).getPieceColor() != currentTurn && (*(board.at(location - 5))).getPieceColor() != EMPTY)
+                    {
+                        qDebug() <<"Selecting Enemy Piece";
+                        (*(board.at(location - (8 * (i + 1))))).highlightEnemy();
+                        break; //End loop if Enemy is found
+                    }
+                    else
+                    {
+                        qDebug() <<"Found Friendly Piece";
+                        break; //End loop if Friendly is found
+                    }
                 }
             }
-        }
-        else if ((*(board.at(location))).getPieceColor() == RED)
-        {
-            if(!((*(board.at(location + (8 * (i + 1))))).hasPiece()))
+            else if ((*(board.at(location))).getPieceColor() == RED)
             {
-                qDebug() <<"Selecting Empty Square";
-                (*(board.at(location + (8 * (i + 1))))).highlightMove();
-            }
-            else
-            {
-                if((*(board.at(location + (8 * (i + 1))))).getPieceColor() != currentTurn && (*(board.at(location - 5))).getPieceColor() != EMPTY)
+                if(!((*(board.at(location + (8 * (i + 1))))).hasPiece()))
                 {
-                    qDebug() <<"Enemy Piece";
-                    (*(board.at(location + (8 * (i + 1))))).highlightEnemy();
-                    break; //End loop if Enemy is found
+                    qDebug() <<"Selecting Empty Square";
+                    (*(board.at(location + (8 * (i + 1))))).highlightMove();
                 }
                 else
                 {
-                    qDebug() <<"Friendly Piece";
-                    break; //End loop if Friendly is found
+                    if((*(board.at(location + (8 * (i + 1))))).getPieceColor() != currentTurn && (*(board.at(location - 5))).getPieceColor() != EMPTY)
+                    {
+                        qDebug() <<"Selecting Enemy Piece";
+                        (*(board.at(location + (8 * (i + 1))))).highlightEnemy();
+                        break; //End loop if Enemy is found
+                    }
+                    else
+                    {
+                        qDebug() <<"selecting Friendly Piece";
+                        break; //End loop if Friendly is found
+                    }
                 }
             }
         }
     }
 }//end of showMoves
+
+//=====================================================================================
+//
+//  oldLoc: The number of the square the selected piece is currently occupying.
+//  newLoc: The number of the square the selected piece is moving to.
+//
+//  index is the value (0-15) where the selected piece resides within the stored vector
+//
+//======================================================================================
+void ChessMain::makeMove(int oldLoc, int newLoc)
+{
+    int index = (*(board.at(oldLoc))).getIndex();
+
+    qDebug() << "oldLoc:" << oldLoc << "newLoc:" << newLoc << "index:" << index;
+
+    for(int j = 0; j < board.size(); j++)
+    {
+        if((*(board.at(j))).isSelected())
+        {
+            showMoves((*(board.at(j))).getNumber());
+            qDebug() <<"Deselecting Piece at" << (*(board.at(j))).getNumber();
+            (*(board.at(j))).select();
+            pieceSelected = false; //Reset the piece selected flag
+            break;
+        }
+    }
+
+    if(currentTurn == BLACK)
+    {
+        (*(black.at(index))).setLoc(newLoc);
+        (*(black.at(index))).setPos((*(board.at(newLoc))).getRectX() + 15, (*(board.at(newLoc))).getRectY() + 5);
+    }
+    else if(currentTurn == RED)
+    {
+        (*(red.at(index))).setLoc(newLoc);
+        (*(red.at(index))).setPos((*(board.at(newLoc))).getRectX() + 15, (*(board.at(newLoc))).getRectY() + 5);
+    }
+
+
+    (*(board.at(oldLoc))).setPiece();
+    (*(board.at(oldLoc))).setPieceColor(EMPTY);
+    (*(board.at(newLoc))).setPiece();
+    (*(board.at(newLoc))).setPieceColor(currentTurn);
+
+    endTurn->click();
+
+}//end of makeMove
+
+void ChessMain::attack()
+{
+
+}//end of attack
 
 void ChessMain::initBoard()
 {
@@ -467,7 +546,7 @@ void ChessMain::initBoard()
 
             qDebug() << "indexCount:" << indexCount;
 
-            if(indexCount < 16)
+            if(indexCount < 15)
                 indexCount++;
             else
                 indexCount = 0;
@@ -488,13 +567,12 @@ void ChessMain::initBoard()
         {
             char type = StartingPlacement[i][j];
             Pieces* pc = new Pieces((*(board.at(count))).getRectX() + 15, (*(board.at(count))).getRectY() + 5, type, (*(board.at(count))).getNumber(), RED, 80, 100);
+            pc->setActive();
             red.push_back(pc);
             (*(board.at(count))).setPiece();
             (*(board.at(count))).setPieceColor(RED);
             count++;
         }
-
-        qDebug() << count;
     }
 
     count = 63;
@@ -507,7 +585,8 @@ void ChessMain::initBoard()
         {
             char type = StartingPlacement[i][j];
             Pieces* pc = new Pieces(board.at(count)->getRectX() + 15, board.at(count)->getRectY() + 5, type, board.at(count)->getNumber(), BLACK, 80, 100);
-            black.push_back(pc);
+            pc->setActive();
+            black.push_front(pc);
             (*(board.at(count))).setPiece();
             (*(board.at(count))).setPieceColor(BLACK);
             count--;
@@ -529,6 +608,7 @@ void ChessMain::nextTurn()
             if((*(board.at(j))).isSelected())
             {
                 showMoves((*(board.at(j))).getNumber());
+                qDebug() <<"Deselecting Piece at" << (*(board.at(j))).getNumber();
                 (*(board.at(j))).select();
                 pieceSelected = false; //Reset the piece selected flag
                 break;
