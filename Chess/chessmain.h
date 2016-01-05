@@ -39,7 +39,8 @@ public:
 
     void showMoves(int location);
     void makeMove(int oldLoc, int newLoc);
-    void attack();
+    void attack(int attackingLoc, int targetLoc);
+    void gameOver();
 
     void initBoard();
 

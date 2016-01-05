@@ -5,13 +5,13 @@ Pieces::Pieces()
 {
     posX = 0;
     posY = 0;
-    rangeX = 1;
+    rangeX = 0;
     rangeY = 1;
     type = 'P';
     width = 80;
     height = 100;
     squareLoc = 0; //Stores which square the piece is currently standing on.
-    active = true;
+    active = false;
     color = 'b';
     image = new QPixmap("../Chess/Images/Black/BlackPawn.png");
 }
@@ -19,8 +19,8 @@ Pieces::Pieces()
 Pieces::Pieces(int x, int y, char type, int squareLoc, char pColor)
 {
     this->setPos(x, y);
-    this->setRange();
     this->setType(type);
+    this->setRange();
     this->setLoc(squareLoc);
     this->setImage(type, pColor);
     this->setSize(width, height);
@@ -30,8 +30,8 @@ Pieces::Pieces(int x, int y, char type, int squareLoc, char pColor)
 Pieces::Pieces(int x, int y, char type, int squareLoc, char pColor, int w, int h)
 {
     this->setPos(x, y);
-    this->setRange();
     this->setType(type);
+    this->setRange();
     this->setLoc(squareLoc);
     this->setImage(type, pColor);
     this->setSize(w, h);
@@ -105,12 +105,10 @@ void Pieces::setImage(char type, char color)
 
     if(color == 'r')
     {
-//        qDebug() << "imageLoc:" << imageLoc.arg("Red").arg(pieceType);
         image = new QPixmap(imageLoc.arg("Red").arg(pieceType));
     }
     else
     {
-//        qDebug() << "imageLoc:" << imageLoc.arg("Black").arg(pieceType);
         image = new QPixmap(imageLoc.arg("Black").arg(pieceType));
     }
 }
@@ -123,24 +121,30 @@ void Pieces::setImage(char type, char color, int width, int height)
 
 void Pieces::drawPiece(QPainter &paint, int w, int h)
 {
-    paint.drawPixmap(this->posX, this->posY, w, h, *image);
+    if(this->isActive())
+    {
+        paint.drawPixmap(this->posX, this->posY, w, h, *image);
+    }
 }
 
 void Pieces::drawPiece(QPainter &paint)
 {
-    paint.drawPixmap(this->posX, this->posY, width, height, *image);
+    if(this->isActive())
+    {
+        paint.drawPixmap(this->posX, this->posY, width, height, *image);
+    }
 }
 
 void Pieces::setRangeY(char type)
 {
     if(type == PAWN)
-        rangeY = 1;
+        rangeY = 1;//The Pawns unique starting condition is handled in showMoves()
     else if(type == ROOK)
         rangeY = 7;
     else if(type == KNIGHT)
-        rangeY = 3;
+        rangeY = 0;//Due to their unique movement pattern, Knight pieces are given a range of zero, however their range of movement is defined in showMoves()
     else if(type == BISHOP)
-        rangeY = 1;
+        rangeY = 7;
     else if(type == QUEEN)
         rangeY = 7;
     else if(type == KING)
@@ -152,19 +156,19 @@ void Pieces::setRangeY(char type)
 void Pieces::setRangeX(char type)
 {
     if(type == PAWN)
-        rangeX = 1;
+        rangeX = 0; //Since Pawns attack at a diagonal, the x-axis parameter is compensated for in showMoves()
     else if(type == ROOK)
         rangeX = 7;
     else if(type == KNIGHT)
-        rangeX = 3;
+        rangeX = 0; //Due to their unique movement pattern, Knight pieces are given a range of zero, however their range of movement is defined in showMoves()
     else if(type == BISHOP)
-        rangeX = 1;
+        rangeX = 0; //Bishops only move in diagonals thus their range is handled by rangeY
     else if(type == QUEEN)
         rangeX = 7;
     else if(type == KING)
         rangeX = 1;
     else
-        rangeX = 1;
+        rangeX = 0;
 }
 
 int Pieces::getPosX()
@@ -204,7 +208,7 @@ int Pieces::getImageHeight()
 
 bool Pieces::isActive()
 {
-    return active;
+    return this->active;
 }
 
 char Pieces::getType()
