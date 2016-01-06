@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
@@ -29,6 +30,7 @@ public:
     QWidget *centralWidget;
     QPushButton *play;
     QPushButton *exit;
+    QCheckBox *checkBox;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -46,6 +48,9 @@ public:
         exit = new QPushButton(centralWidget);
         exit->setObjectName(QStringLiteral("exit"));
         exit->setGeometry(QRect(160, 110, 75, 23));
+        checkBox = new QCheckBox(centralWidget);
+        checkBox->setObjectName(QStringLiteral("checkBox"));
+        checkBox->setGeometry(QRect(160, 160, 101, 17));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -68,6 +73,7 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         play->setText(QApplication::translate("MainWindow", "Play", 0));
         exit->setText(QApplication::translate("MainWindow", "Exit", 0));
+        checkBox->setText(QApplication::translate("MainWindow", "Enable Dev Stats", 0));
     } // retranslateUi
 
 };

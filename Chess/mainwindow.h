@@ -22,9 +22,11 @@ private slots:
 
     void on_exit_clicked();
 
+    void on_checkBox_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
-
+    bool devOptions;
     ChessMain* cm;
 };
 

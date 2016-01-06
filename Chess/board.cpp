@@ -30,7 +30,7 @@ Board::Board(int x, int y, int size, int number, int indexValue, bool piece, cha
     highlightedEnemy = false;
     containsPiece = piece;
     this->setPieceColor(color);
-    QRect* square = new QRect(x, y, size, size);
+//    QRect* square = new QRect(x, y, size, size);
 }
 
 void Board::setSize(int size)

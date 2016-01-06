@@ -25,6 +25,7 @@ Pieces::Pieces(int x, int y, char type, int squareLoc, char pColor)
     this->setImage(type, pColor);
     this->setSize(width, height);
     this->color = pColor;
+    this->active = true;
 }
 
 Pieces::Pieces(int x, int y, char type, int squareLoc, char pColor, int w, int h)
@@ -36,6 +37,19 @@ Pieces::Pieces(int x, int y, char type, int squareLoc, char pColor, int w, int h
     this->setImage(type, pColor);
     this->setSize(w, h);
     this->color = pColor;
+    this->active = true;
+}
+
+Pieces::Pieces(int x, int y, char type, int squareLoc, char pColor, int w, int h, bool active)
+{
+    this->setPos(x, y);
+    this->setType(type);
+    this->setRange();
+    this->setLoc(squareLoc);
+    this->setImage(type, pColor);
+    this->setSize(w, h);
+    this->color = pColor;
+    this->active = active;
 }
 
 Pieces::~Pieces()
@@ -127,11 +141,16 @@ void Pieces::drawPiece(QPainter &paint, int w, int h)
     }
 }
 
-void Pieces::drawPiece(QPainter &paint)
+void Pieces::drawPiece(QPainter &paint, bool devOpts)
 {
     if(this->isActive())
     {
         paint.drawPixmap(this->posX, this->posY, width, height, *image);
+
+        if(devOpts)
+        {
+            paint.drawText(this->posX - 10, this->posY + 75, QString(this->type));
+        }
     }
 }
 

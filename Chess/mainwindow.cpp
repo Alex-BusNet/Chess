@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     cm = NULL;
+    devOptions = false;
 }
 
 MainWindow::~MainWindow()
@@ -27,10 +28,17 @@ void MainWindow::on_play_clicked()
         cm = new ChessMain();
     }
 
+    cm->setDevOpts(devOptions);
+
     cm->show();
 }
 
 void MainWindow::on_exit_clicked()
 {
     QApplication::exit();
+}
+
+void MainWindow::on_checkBox_toggled(bool checked)
+{
+    devOptions = checked;
 }

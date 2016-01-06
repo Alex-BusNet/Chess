@@ -25,6 +25,7 @@ public:
     Pieces();
     Pieces(int x, int y, char type, int squareLoc, char pColor);
     Pieces(int x, int y, char type, int squareLoc, char color, int w, int h);
+    Pieces(int x, int y, char type, int squareLoc, char pColor, int w, int h, bool active);
     ~Pieces();
 
     void setPos(int x, int y);
@@ -37,7 +38,7 @@ public:
     void setImage(char type, char color, int width, int height);
 
     void drawPiece(QPainter &paint, int width, int h);
-    void drawPiece(QPainter &paint);
+    void drawPiece(QPainter &paint, bool devOpts);
 
     int getPosX();
     int getPosY();

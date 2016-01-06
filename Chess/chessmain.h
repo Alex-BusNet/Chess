@@ -19,7 +19,7 @@ class ChessMain : public QWidget
 
 private:
     int BOARD_WIDTH, BOARD_HEIGHT, rectPosX, rectPosY, size, lastPieceSelected;
-    bool pieceSelected, opponentHighlighted;
+    bool pieceSelected, opponentHighlighted, devOpts, promote;
     enum turn {RED = 'r', BLACK = 'b', EMPTY = 'e'};
     char currentTurn;
 
@@ -38,11 +38,14 @@ public:
     void mouseReleaseEvent(QMouseEvent *e);
 
     void showMoves(int location);
-    void makeMove(int oldLoc, int newLoc);
-    void attack(int attackingLoc, int targetLoc);
+    void makeMove(int oldLoc, int newLoc, const QVector<Pieces *> &vec);
+    void attack(int atkLoc, int trgLoc, const QVector<Pieces *> &atkVector, const QVector<Pieces *> &trgVector);
     void gameOver();
+    void promotion(int loc, const QVector<Pieces*> &vec);
 
     void initBoard();
+    void setDevOpts(bool show);
+
 
 private slots:
     void updateGame();
