@@ -18,19 +18,17 @@ Board::Board()
     containsPiece = false;
 }
 
-Board::Board(int x, int y, int size, int number, int indexValue, bool piece, char color)
+Board::Board(int x, int y, int size, int number, bool piece, char color)
 {
     this->setNumber(number);
     this->rectPosX = x;
     this->rectPosY = y;
     this->setSize(size);
-    this->setIndex(indexValue);
     selected = false;
     highlightedMove = false;
     highlightedEnemy = false;
     containsPiece = piece;
     this->setPieceColor(color);
-//    QRect* square = new QRect(x, y, size, size);
 }
 
 void Board::setSize(int size)

@@ -3,6 +3,8 @@
 #include "pieces.h"
 #include "string"
 #include "sstream"
+#include "fstream"
+#include "QStringList"
 
 using namespace std;
 
@@ -38,10 +40,14 @@ ChessMain::ChessMain(QWidget *parent) : QWidget(parent)
     endTurn = new QPushButton("End Turn", this);
     endTurn->move(1000, 500);
 
+    saveGame = new QPushButton("Save Game", this);
+    saveGame->move(1000, 550);
+
     endGame = new QPushButton("End Game", this);
-    endGame->move(1000, 550);
+    endGame->move(1000, 600);
 
     connect(endTurn, SIGNAL(clicked(bool)), this, SLOT(nextTurn()));
+    connect(saveGame, SIGNAL(clicked(bool)), this, SLOT(saveToFile()));
     connect(endGame, SIGNAL(clicked(bool)), this, SLOT(close()));
 
     timer = new QTimer();
@@ -297,29 +303,62 @@ void ChessMain::showMoves(int location)
         {
             if(location - 6 >= 0) //Towards Red team
             {
-                if(location % 8 < 2)
+                if(location % 8 < 6)
                 {
                     if(!(*(board.at(location - 6))).hasPiece())
                     {
+                        if(devOpts) qDebug() << "Highlighting Empty Square:" << board.at(location - 6)->getNumber();
                         (*(board.at(location - 6))).highlightMove();
                     }
                     else if((*(board.at(location - 6))).getPieceColor() != currentTurn && ((*(board.at(location - 6))).getPieceColor() != EMPTY))
                     {
+                        if(devOpts) qDebug() << "Enemy at:" << board.at(location - 6)->getNumber();
                         (*(board.at(location - 6))).highlightEnemy();
+                    }
+                    else
+                    {
+                        if(devOpts) qDebug() << "Friendly at:" << board.at(location - 6)->getNumber();
                     }
                 }
 
-                if(location % 8  < 7)
+                if(location % 8 > 1)
+                {
+                    if(location - 10 >= 0)
+                    {
+                        if(!(*(board.at(location - 10))).hasPiece())
+                        {
+                            if(devOpts) qDebug() << "Highlighting Empty Square:" << board.at(location - 10)->getNumber();
+                            (*(board.at(location - 10))).highlightMove();
+                        }
+                        else if((*(board.at(location - 10))).getPieceColor() != currentTurn && ((*(board.at(location - 10))).getPieceColor() != EMPTY))
+                        {
+                            if(devOpts) qDebug() << "Enemy at:" << board.at(location - 10)->getNumber();
+                            (*(board.at(location - 10))).highlightEnemy();
+                        }
+                        else
+                        {
+                            if(devOpts) qDebug() << "Friendly at:" << board.at(location - 10)->getNumber();
+                        }
+                    }
+                }
+
+                if(location % 8 < 7)
                 {
                     if(location - 15 >= 0)
                     {
                         if(!(*(board.at(location - 15))).hasPiece())
                         {
+                            if(devOpts) qDebug() << "Highlighting Empty Square:" << board.at(location - 15)->getNumber();
                             (*(board.at(location - 15))).highlightMove();
                         }
                         else if((*(board.at(location - 15))).getPieceColor() != currentTurn && ((*(board.at(location - 15))).getPieceColor() != EMPTY))
                         {
+                            if(devOpts) qDebug() << "Enemy at:" << board.at(location - 15)->getNumber();
                             (*(board.at(location - 15))).highlightEnemy();
+                        }
+                        else
+                        {
+                            if(devOpts) qDebug() << "Friendly at:" << board.at(location - 15)->getNumber();
                         }
                     }
                 }
@@ -330,11 +369,17 @@ void ChessMain::showMoves(int location)
                     {
                         if(!(*(board.at(location - 17))).hasPiece())
                         {
+                            if(devOpts) qDebug() << "Highlighting Empty Square:" << board.at(location - 17)->getNumber();
                             (*(board.at(location - 17))).highlightMove();
                         }
                         else if((*(board.at(location - 17))).getPieceColor() != currentTurn && ((*(board.at(location - 17))).getPieceColor() != EMPTY))
                         {
+                            if(devOpts) qDebug() << "Enemy at:" << board.at(location - 6)->getNumber();
                             (*(board.at(location - 17))).highlightEnemy();
+                        }
+                        else
+                        {
+                            if(devOpts) qDebug() << "Friendly at:" << board.at(location - 17)->getNumber();
                         }
                     }
                 }
@@ -346,11 +391,17 @@ void ChessMain::showMoves(int location)
                 {
                     if(!(*(board.at(location + 6))).hasPiece())
                     {
+                        if(devOpts) qDebug() << "Highlighting Empty Square:" << board.at(location + 6)->getNumber();
                         (*(board.at(location + 6))).highlightMove();
                     }
                     else if((*(board.at(location + 6))).getPieceColor() != currentTurn && ((*(board.at(location + 6))).getPieceColor() != EMPTY))
                     {
+                        if(devOpts) qDebug() << "Enemy at:" << board.at(location + 6)->getNumber();
                         (*(board.at(location + 6))).highlightEnemy();
+                    }
+                    else
+                    {
+                        if(devOpts) qDebug() << "Friendly at:" << board.at(location + 6)->getNumber();
                     }
                 }
 
@@ -360,11 +411,17 @@ void ChessMain::showMoves(int location)
                     {
                         if(!(*(board.at(location + 10))).hasPiece())
                         {
+                            if(devOpts) qDebug() << "Highlighting Empty Square:" << board.at(location + 10)->getNumber();
                             (*(board.at(location + 10))).highlightMove();
                         }
                         else if((*(board.at(location + 10))).getPieceColor() != currentTurn && ((*(board.at(location + 10))).getPieceColor() != EMPTY))
                         {
+                            if(devOpts) qDebug() << "Enemy at:" << board.at(location + 10)->getNumber();
                             (*(board.at(location + 10))).highlightEnemy();
+                        }
+                        else
+                        {
+                            if(devOpts) qDebug() << "Friendly at:" << board.at(location + 10)->getNumber();
                         }
                     }
                 }
@@ -375,11 +432,17 @@ void ChessMain::showMoves(int location)
                     {
                         if(!(*(board.at(location + 15))).hasPiece())
                         {
+                            if(devOpts) qDebug() << "Highlighting Empty Square:" << board.at(location + 15)->getNumber();
                             (*(board.at(location + 15))).highlightMove();
                         }
-                        else if((*(board.at(location + 15))).getPieceColor() != currentTurn && ((*(board.at(location - 15))).getPieceColor() != EMPTY))
+                        else if((*(board.at(location + 15))).getPieceColor() != currentTurn && ((*(board.at(location + 15))).getPieceColor() != EMPTY))
                         {
+                            if(devOpts) qDebug() << "Enemy at:" << board.at(location + 15)->getNumber();
                             (*(board.at(location + 15))).highlightEnemy();
+                        }
+                        else
+                        {
+                            if(devOpts) qDebug() << "Friendly at:" << board.at(location + 15)->getNumber();
                         }
                     }
                 }
@@ -390,11 +453,17 @@ void ChessMain::showMoves(int location)
                     {
                         if(!(*(board.at(location + 17))).hasPiece())
                         {
+                            if(devOpts) qDebug() << "Highlighting Empty Square:" << board.at(location + 17)->getNumber();
                             (*(board.at(location + 17))).highlightMove();
                         }
-                        else if((*(board.at(location + 17))).getPieceColor() != currentTurn && ((*(board.at(location - 17))).getPieceColor() != EMPTY))
+                        else if((*(board.at(location + 17))).getPieceColor() != currentTurn && ((*(board.at(location + 17))).getPieceColor() != EMPTY))
                         {
+                            if(devOpts) qDebug() << "Enemy at:" << board.at(location + 17)->getNumber();
                             (*(board.at(location + 17))).highlightEnemy();
+                        }
+                        else
+                        {
+                            if(devOpts) qDebug() << "Friendly at:" << board.at(location + 17)->getNumber();
                         }
                     }
                 }
@@ -922,9 +991,11 @@ axisR:
 //
 //======================================================================================
 
-void ChessMain::makeMove(int oldLoc, int newLoc, const QVector<Pieces*> &vec)
+void ChessMain::makeMove(int oldLoc, int newLoc, const QVector<Pieces*> &vec, bool load)
 {
     int index = 0;
+
+    if(devOpts) qDebug() << "OldLoc:" << oldLoc << "NewLoc:" << newLoc << "Load:" << load;
 
     for(int i = 0; i < vec.size(); i++)
     {
@@ -935,17 +1006,25 @@ void ChessMain::makeMove(int oldLoc, int newLoc, const QVector<Pieces*> &vec)
         }
     }
 
-    showMoves(oldLoc);
-    (*(board.at(oldLoc))).select();
-    pieceSelected = false; //Reset the piece selected flag
+    if(!load)
+    {
+        showMoves(oldLoc);
+        (*(board.at(oldLoc))).select();
+        pieceSelected = false; //Reset the piece selected flag
+    }
 
-    vec.at(index)->setLoc(newLoc);
-    vec.at(index)->setPos((*(board.at(newLoc))).getRectX() + 15, (*(board.at(newLoc))).getRectY() + 5);
+//    if(devOpts) qDebug() << "OldLoc:" << oldLoc << "NewLoc:" << newLoc;
 
-    (*(board.at(oldLoc))).setPiece();
-    (*(board.at(oldLoc))).setPieceColor(EMPTY);
-    (*(board.at(newLoc))).setPiece();
-    (*(board.at(newLoc))).setPieceColor(currentTurn);
+    if(oldLoc != newLoc)
+    {
+        vec.at(index)->setLoc(newLoc);
+        vec.at(index)->setPos((*(board.at(newLoc))).getRectX() + 15, (*(board.at(newLoc))).getRectY() + 5);
+
+        (*(board.at(oldLoc))).setPiece();
+        (*(board.at(oldLoc))).setPieceColor(EMPTY);
+        (*(board.at(newLoc))).setPiece();
+        (*(board.at(newLoc))).setPieceColor(currentTurn);
+    }
 
     if(vec.at(index)->getType() == 'P')
     {
@@ -1057,27 +1136,18 @@ void ChessMain::promotion(int loc, const QVector<Pieces *> &vec)
 void ChessMain::initBoard()
 {
     int count = 0;
-    int indexCount = 0;
 
     if(devOpts) qDebug() << "Generating Board";
     for(int i = 0; i < BOARD_HEIGHT; i++)
     {
         for(int j = 0; j < BOARD_WIDTH; j++)
         {
-            Board* bsqr = new Board(rectPosX, rectPosY, size, count, indexCount, false, EMPTY);
+            Board* bsqr = new Board(rectPosX, rectPosY, size, count, false, EMPTY);
 
             board.push_back(bsqr);
 
             rectPosX += size + 1;
             count++;
-
-            if(devOpts) qDebug() << "indexCount:" << indexCount;
-
-            if(indexCount < 15)
-                indexCount++;
-            else
-                indexCount = 0;
-
         }
 
         rectPosY += size + 1;
@@ -1124,6 +1194,98 @@ void ChessMain::setDevOpts(bool show)
     this->devOpts = show;
 }
 
+void ChessMain::loadGame()
+{
+    ifstream load;
+    load.open("../Chess/Saves/latest.txt");
+
+    if(load.is_open())
+    {
+        string data;
+        int loc;
+        const char* type;
+        bool active;
+
+        for(int i = 0; i < red.size(); i++)
+        {
+            getline(load, data);
+            QString pData = QString::fromStdString(data);
+            QStringList dataList = pData.split(",");
+
+//            qDebug() << "Red dataList:" << dataList;
+
+            loc = dataList[0].trimmed().toInt();
+            type = dataList[1].toUtf8().constData();
+
+            if(devOpts) qDebug() << "Loc:" << loc << "Type:" << type;
+
+            if(dataList[2].trimmed().toInt())
+            {
+                active = true;
+            }
+            else
+            {
+                active = false;
+            }
+
+            makeMove(red.at(i)->getLoc(), loc, red, true);
+
+            if(!active)
+            {
+                red.at(i)->setActive();
+            }
+
+            delete type;
+        }
+
+        getline(load, data);
+
+        for(int i = 0; i < black.size(); i++)
+        {
+            getline(load, data);
+            QString pData = QString::fromStdString(data);
+
+            QStringList dataList = pData.split(",");
+//            qDebug() << "Black dataList:" <<dataList;
+
+            loc = dataList[0].trimmed().toInt();
+            type = dataList[1].toUtf8().constData();
+
+            if(devOpts) qDebug() << "Loc:" <<loc << "Type:" << type;
+
+            if(dataList[2].trimmed().toInt())
+            {
+                active = true;
+            }
+            else
+            {
+                active = false;
+            }
+
+            makeMove(black.at(i)->getLoc(), loc, black, true);
+
+            if(!active)
+            {
+                black.at(i)->setActive();
+            }
+
+            delete type;
+        }
+
+        getline(load, data);
+        getline(load, data);
+
+        QString pData = QString::fromStdString(data);
+        QStringList dataList = pData.split(":", QString::SkipEmptyParts);
+        qDebug() << "Turn:" << dataList[1].trimmed().toInt();
+
+        if(dataList[1].trimmed().toInt() == 0)
+            currentTurn = BLACK;
+        else
+            currentTurn = RED;
+    }
+}
+
 
 void ChessMain::updateGame()
 {
@@ -1158,4 +1320,33 @@ void ChessMain::nextTurn()
 
 
 }//end of updateGame
+
+void ChessMain::saveToFile()
+{
+    ofstream out;
+    out.open("../Chess/Saves/latest.txt");
+
+    foreach(Pieces* piece, red)
+    {
+        out << piece->getLoc() << ", " << piece->getType() << ", " << piece->isActive() << endl;
+    }
+
+    out << "End" << endl;
+
+    foreach(Pieces* piece, black)
+    {
+        out << piece->getLoc() << ", " << piece->getType() << ", " << piece->isActive() << endl;
+    }
+    out << "End" << endl;
+
+    if(currentTurn == BLACK)
+        out << "Turn:" << 0;
+    else
+        out << "Turn:" << 1;
+
+    out.flush();
+    out.close();
+
+    this->close();
+}
 

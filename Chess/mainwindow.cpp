@@ -42,3 +42,23 @@ void MainWindow::on_checkBox_toggled(bool checked)
 {
     devOptions = checked;
 }
+
+void MainWindow::on_load_clicked()
+{
+    if(cm == NULL)
+    {
+        cm = new ChessMain();
+    }
+    else
+    {
+        delete cm;
+        cm = new ChessMain();
+    }
+
+    cm->setDevOpts(devOptions);
+
+    cm->loadGame();
+
+
+    cm->show();
+}

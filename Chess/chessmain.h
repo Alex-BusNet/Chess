@@ -24,7 +24,7 @@ private:
     char currentTurn;
 
     QTimer *timer;
-    QPushButton *endTurn, *endGame;
+    QPushButton *endTurn, *endGame, *saveGame;
 
 public:
     explicit ChessMain(QWidget* parent = 0);
@@ -38,7 +38,7 @@ public:
     void mouseReleaseEvent(QMouseEvent *e);
 
     void showMoves(int location);
-    void makeMove(int oldLoc, int newLoc, const QVector<Pieces *> &vec);
+    void makeMove(int oldLoc, int newLoc, const QVector<Pieces *> &vec, bool load = false);
     void attack(int atkLoc, int trgLoc, const QVector<Pieces *> &atkVector, const QVector<Pieces *> &trgVector);
     void gameOver();
     void promotion(int loc, const QVector<Pieces*> &vec);
@@ -46,10 +46,12 @@ public:
     void initBoard();
     void setDevOpts(bool show);
 
+    void loadGame();
 
 private slots:
     void updateGame();
     void nextTurn();
+    void saveToFile();
 };
 
 #endif // CHESSMAIN_H

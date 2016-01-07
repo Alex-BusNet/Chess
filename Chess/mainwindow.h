@@ -24,6 +24,8 @@ private slots:
 
     void on_checkBox_toggled(bool checked);
 
+    void on_load_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool devOptions;

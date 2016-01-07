@@ -15,7 +15,7 @@ private:
 
 public:
     Board();
-    Board(int x, int y, int size, int number, int indexValue, bool piece, char color);
+    Board(int x, int y, int size, int number, bool piece, char color);
 
 //    void drawBoard(QPainter &paint);
     void initBoard();

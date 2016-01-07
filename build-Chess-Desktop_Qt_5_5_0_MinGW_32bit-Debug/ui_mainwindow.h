@@ -31,6 +31,7 @@ public:
     QPushButton *play;
     QPushButton *exit;
     QCheckBox *checkBox;
+    QPushButton *load;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -47,10 +48,13 @@ public:
         play->setGeometry(QRect(160, 40, 75, 23));
         exit = new QPushButton(centralWidget);
         exit->setObjectName(QStringLiteral("exit"));
-        exit->setGeometry(QRect(160, 110, 75, 23));
+        exit->setGeometry(QRect(160, 100, 75, 23));
         checkBox = new QCheckBox(centralWidget);
         checkBox->setObjectName(QStringLiteral("checkBox"));
         checkBox->setGeometry(QRect(160, 160, 101, 17));
+        load = new QPushButton(centralWidget);
+        load->setObjectName(QStringLiteral("load"));
+        load->setGeometry(QRect(160, 70, 75, 23));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -74,6 +78,7 @@ public:
         play->setText(QApplication::translate("MainWindow", "Play", 0));
         exit->setText(QApplication::translate("MainWindow", "Exit", 0));
         checkBox->setText(QApplication::translate("MainWindow", "Enable Dev Stats", 0));
+        load->setText(QApplication::translate("MainWindow", "Load Game", 0));
     } // retranslateUi
 
 };
